@@ -11,10 +11,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.thiagoCompass.ImplementacaoUML.domain.Categoria;
 import com.thiagoCompass.ImplementacaoUML.domain.Cidade;
+import com.thiagoCompass.ImplementacaoUML.domain.Cliente;
+import com.thiagoCompass.ImplementacaoUML.domain.Endereco;
 import com.thiagoCompass.ImplementacaoUML.domain.Estado;
 import com.thiagoCompass.ImplementacaoUML.domain.Produto;
+import com.thiagoCompass.ImplementacaoUML.domain.enums.TipoCliente;
 import com.thiagoCompass.ImplementacaoUML.repositories.CategoriaRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.CidadeRepository;
+import com.thiagoCompass.ImplementacaoUML.repositories.ClienteRepository;
+import com.thiagoCompass.ImplementacaoUML.repositories.EnderecoRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.EstadoRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.ProdutoRepository;
 
@@ -32,6 +37,12 @@ public class ImplementacaoUmlApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CidadeRepository cidaderepository;
+	
+	@Autowired
+	private ClienteRepository clienterepository;
+	
+	@Autowired
+	private EnderecoRepository enderecorepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ImplementacaoUmlApplication.class, args);
@@ -74,9 +85,19 @@ public class ImplementacaoUmlApplication implements CommandLineRunner{
 		estadorepository.saveAll(Arrays.asList(est1, est2));
 		cidaderepository.saveAll(Arrays.asList(c1, c2, c3));
 		
+		//clientes e endereços
 		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36778912377", TipoCliente.PESSOAFISICA); 
 		
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220634", cli1, c1 );
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2 );
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienterepository.saveAll(Arrays.asList(cli1));
+		enderecorepository.saveAll(Arrays.asList(e1, e2));
 	}
 
 }
