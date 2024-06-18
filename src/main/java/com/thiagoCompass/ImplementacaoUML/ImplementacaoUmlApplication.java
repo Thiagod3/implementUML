@@ -3,6 +3,7 @@ package com.thiagoCompass.ImplementacaoUML;
 
 
 import java.util.Arrays;
+import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,13 +15,20 @@ import com.thiagoCompass.ImplementacaoUML.domain.Cidade;
 import com.thiagoCompass.ImplementacaoUML.domain.Cliente;
 import com.thiagoCompass.ImplementacaoUML.domain.Endereco;
 import com.thiagoCompass.ImplementacaoUML.domain.Estado;
+import com.thiagoCompass.ImplementacaoUML.domain.Pagamento;
+import com.thiagoCompass.ImplementacaoUML.domain.PagamentoComBoleto;
+import com.thiagoCompass.ImplementacaoUML.domain.PagamentoComCartao;
+import com.thiagoCompass.ImplementacaoUML.domain.Pedido;
 import com.thiagoCompass.ImplementacaoUML.domain.Produto;
+import com.thiagoCompass.ImplementacaoUML.domain.enums.EstadoPagamento;
 import com.thiagoCompass.ImplementacaoUML.domain.enums.TipoCliente;
 import com.thiagoCompass.ImplementacaoUML.repositories.CategoriaRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.CidadeRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.ClienteRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.EnderecoRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.EstadoRepository;
+import com.thiagoCompass.ImplementacaoUML.repositories.PagamentoRepository;
+import com.thiagoCompass.ImplementacaoUML.repositories.PedidoRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -43,6 +51,12 @@ public class ImplementacaoUmlApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EnderecoRepository enderecorepository;
+	
+	@Autowired
+	private PedidoRepository pedidorepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentorepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ImplementacaoUmlApplication.class, args);
@@ -98,6 +112,40 @@ public class ImplementacaoUmlApplication implements CommandLineRunner{
 		
 		clienterepository.saveAll(Arrays.asList(cli1));
 		enderecorepository.saveAll(Arrays.asList(e1, e2));
+		
+		//pedidos e pagamentos
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		
+		ped1.setPagamento(pagto1);
+		ped2.setPagamento(pagto2);
+		
+		pedidorepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentorepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
