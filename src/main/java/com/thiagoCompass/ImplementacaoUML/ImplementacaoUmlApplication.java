@@ -10,8 +10,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.thiagoCompass.ImplementacaoUML.domain.Categoria;
+import com.thiagoCompass.ImplementacaoUML.domain.Cidade;
+import com.thiagoCompass.ImplementacaoUML.domain.Estado;
 import com.thiagoCompass.ImplementacaoUML.domain.Produto;
 import com.thiagoCompass.ImplementacaoUML.repositories.CategoriaRepository;
+import com.thiagoCompass.ImplementacaoUML.repositories.CidadeRepository;
+import com.thiagoCompass.ImplementacaoUML.repositories.EstadoRepository;
 import com.thiagoCompass.ImplementacaoUML.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -22,6 +26,12 @@ public class ImplementacaoUmlApplication implements CommandLineRunner{
 	
 	@Autowired
 	private ProdutoRepository produtorepository;
+	
+	@Autowired
+	private EstadoRepository estadorepository;
+	
+	@Autowired
+	private CidadeRepository cidaderepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ImplementacaoUmlApplication.class, args);
@@ -29,6 +39,8 @@ public class ImplementacaoUmlApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		//categorias e produtos
 		Categoria cat1 = new Categoria(null, "Informatica");
 		Categoria cat2 = new Categoria(null, "Escritório");
 		
@@ -46,6 +58,23 @@ public class ImplementacaoUmlApplication implements CommandLineRunner{
 		
 		categoriarepository.saveAll(Arrays.asList(cat1,cat2));
 		produtorepository.saveAll(Arrays.asList(p1, p2, p3));
+		
+		//Estados e cidades
+		
+		Estado est1 = new Estado(null, "Rio de Janeiro");
+		Estado est2 = new Estado(null, "São Paulo");
+		
+		Cidade c1 = new Cidade(null, "Niterói", est1);
+		Cidade c2 = new Cidade(null, "São Paulo", est2);
+		Cidade c3 = new Cidade(null, "Santos", est2);
+		
+		est1.getCidades().addAll(Arrays.asList(c1));
+		est2.getCidades().addAll(Arrays.asList(c2, c3));
+		
+		estadorepository.saveAll(Arrays.asList(est1, est2));
+		cidaderepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		
 		
 		
 	}
