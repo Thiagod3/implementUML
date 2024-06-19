@@ -3,6 +3,8 @@ package com.thiagoCompass.ImplementacaoUML.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class Endereco implements Serializable{
 	@JoinColumn(name="cidade_id")
 	private Cidade cidade;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;

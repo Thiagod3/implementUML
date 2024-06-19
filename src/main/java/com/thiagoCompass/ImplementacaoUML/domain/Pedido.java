@@ -35,12 +35,11 @@ public class Pedido implements Serializable{
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
 	
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="endEntrega_id")
 	private Endereco enderecoDeEntrega;
 	
-	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL,mappedBy = "pedido")
 	private Pagamento pagamento;
 
